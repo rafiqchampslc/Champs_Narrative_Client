@@ -1,1 +1,16 @@
-<router-outlet />
+
+<app-loader></app-loader>
+<app-header *ngIf="showHeader" />
+<main class="main-content" *ngIf="showMainContent">
+  <router-outlet />
+</main>
+<!-- Show router-outlet directly (no padding) for login page -->
+<router-outlet *ngIf="!showMainContent" />
+<app-footer *ngIf="showHeader" />
+
+<!-- <app-loader></app-loader>
+<app-header *ngIf="showHeader" />
+<main class="main-content">
+  <router-outlet />
+</main>
+<app-footer *ngIf="showHeader" /> -->

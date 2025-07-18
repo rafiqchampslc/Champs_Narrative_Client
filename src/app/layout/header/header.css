@@ -1,0 +1,39 @@
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #04a31d;
+  }
+  
+  .logout-button {
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logout-icon {
+    margin-right: 5px;
+  }
+  
+  .main-content {
+    padding-top: 104px; 
+    padding-bottom: 84px; 
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .copyright-text {
+    margin: auto;
+  }

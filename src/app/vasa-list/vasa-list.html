@@ -1,2 +1,110 @@
-<h1>VASA List</h1>
-<p>Welcome to the VASA List page!</p>
+<div class="vasa-list-container">
+  <mat-card class="filter-card">
+    <mat-card-header style="margin-bottom: 10px;">
+      <mat-card-title>Filter Options</mat-card-title>
+    </mat-card-header>
+    <mat-card-content >
+      <div class="row">
+        <div class="col-md-4">
+         <mat-form-field appearance="outline" class="w-100">
+             <mat-label style="font-size: 1.35rem; color: #434343; font-weight:500;">ODK Version</mat-label>
+            <mat-select [(ngModel)]="selectedOdkVersion">
+              <mat-option *ngFor="let version of odkVersions" [value]="version.actualValue || version.vasaDisplayVersion">
+                {{ version.vasaDisplayVersion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+             <mat-label style="font-size: 1.35rem; color: #434343; font-weight:500;">Death Type</mat-label>
+            <mat-select [(ngModel)]="selectedDeathType">
+              <mat-option *ngFor="let type of deathTypes" [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label style="font-size: 1.35rem; color: #434343; font-weight:500;">Narrative Status</mat-label>
+            <mat-select [(ngModel)]="selectedNarrativeStatus">
+              <mat-option *ngFor="let status of narrativeStatuses" [value]="status.value">
+                {{ status.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label style="font-size: 1.35rem; ">Data Collection Date From</mat-label>
+            <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="dataCollectionDateFrom" readonly>
+            <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFrom></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label style="font-size: 1.35rem; ">Data Collection Date To</mat-label>
+            <input matInput [matDatepicker]="pickerTo" [(ngModel)]="dataCollectionDateTo" readonly>
+            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #pickerTo></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 d-flex align-items-center justify-content-end">
+          <button mat-raised-button color="primary" (click)="onSearch()" class="large-search-button">Search</button>
+        </div>
+      </div>
+      <div *ngIf="dateRangeError" class="text-danger mt-2">
+        {{ dateRangeError }}
+      </div>
+      <div *ngIf="apiError" class="text-danger mt-2">
+        {{ apiError }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="table-card">
+    <mat-card-header>
+      <mat-card-title>VASA Details</mat-card-title>
+      <div class="color-legend">
+        <span class="legend-item"><span class="color-box complete"></span> Complete</span>
+        <span class="legend-item"><span class="color-box incomplete"></span> Incomplete</span>
+        <span class="legend-item"><span class="color-box no-narrative"></span> No Narrative</span>
+        <span class="legend-item"><span class="color-box other"></span> Still Not Written</span>
+      </div>
+      <div class="spacer"></div>
+      <mat-form-field appearance="outline" class="table-filter-field">
+        <mat-label style="font-size: 1.35rem; ">Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+      </mat-form-field>
+    </mat-card-header>
+    <mat-card-content class="table-scroll-content">
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="vasaNarrativeData">
+
+          <ng-container matColumnDef="narrative">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-button [ngStyle]="{'background-color': getNarrativeButtonColor(element.isCompleted), 'color': 'white'}" (click)="openNarrative(element)">Narrative</button>
+            </td>
+          </ng-container>
+
+          <ng-container *ngFor="let col of getTableColumns()" [matColumnDef]="col">
+            <th mat-header-cell *matHeaderCellDef> {{ columnDisplayNames[col] || col }} </th>
+            <td mat-cell *matCellDef="let element"> {{element[col]}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </mat-card>
+</div>

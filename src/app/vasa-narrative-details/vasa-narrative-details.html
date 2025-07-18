@@ -1,0 +1,283 @@
+<div class="details-container" *ngIf="narrativeDetails && !errorMessage">
+  <div class="card-container">
+    <mat-card class="pg-data-card">
+      <div class="deceased-info-title">Deceased Information</div>
+      <div class="deceased-info-grid">
+        <div class="info-item">
+          <span class="label">Deceased Name:</span>
+          <span class="value">{{ narrativeDetails.pgData.name }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">CHAMPS ID:</span>
+          <span class="value">{{ narrativeDetails.pgData.champsid }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">HDSS ID:</span>
+          <span class="value">{{ narrativeDetails.pgData.hdssid }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Date of Birth:</span>
+          <span class="value">{{ narrativeDetails.pgData.dob }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Date of Death:</span>
+          <span class="value">{{ narrativeDetails.pgData.dod }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Age:</span>
+          <span class="value">{{ formatAge(narrativeDetails.pgData.age, narrativeDetails.pgData.age_unit) }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Sex:</span>
+          <span class="value">{{ formatSex(narrativeDetails.pgData.sex) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Father/HH Head:</span>
+          <span class="value">{{ narrativeDetails.pgData.fat_hhhead }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Mother:</span>
+          <span class="value">{{ narrativeDetails.pgData.mother }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Address:</span>
+          <span class="value">{{ narrativeDetails.pgData.adderss }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Age Group:</span>
+          <span class="value">{{ formatAgeGroup(narrativeDetails.pgData.is_sb, narrativeDetails.pgData.is_neonate, narrativeDetails.pgData.is_child, narrativeDetails.pgData.is_adult) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Interview Date:</span>
+          <span class="value">{{ narrativeDetails.pgData.intv_date }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Interview Time:</span>
+          <span class="value">{{ narrativeDetails.pgData.intv_time }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Interview Status:</span>
+          <span class="value">{{ formatInterviewStatus(narrativeDetails.pgData.intrv_result) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Consent:</span>
+          <span class="value">{{ formatConsent(narrativeDetails.pgData.isconcented) }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Data Entry DateTime:</span>
+          <span class="value">{{ narrativeDetails.pgData.starttime }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">System Version:</span>
+          <span class="value">{{ narrativeDetails.pgData.version }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">UUID:</span>
+          <span class="value">{{ narrativeDetails.pgData.uuid }}</span>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="narrative-input-card">
+      <div class="narrative-card-title">VASA Narrative</div>
+      <div class="narrative-card-content">
+        <mat-form-field appearance="fill" class="narrative-field">
+          <mat-label style="font-size: 1.35rem; ">VASA Narrative</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="vasaNarrative"
+            (ngModelChange)="onNarrativeChange()"
+            rows="9"
+            maxlength="10000"
+            placeholder="বাংলা বা ইংরেজিতে বিবরণ লিখুন..."></textarea>
+          <mat-hint align="end">{{ vasaNarrative?.length || 0 }}/10000</mat-hint>
+        </mat-form-field>
+
+        <div class="status-group">
+          <label class="status-label">Narrative Status:</label>
+          <mat-radio-group
+            aria-label="Narrative Status"
+            [(ngModel)]="narrativeStatus"
+            (ngModelChange)="onNarrativeStatusChange()">
+            <mat-radio-button color="primary" value="1" class="me-3">Complete</mat-radio-button>
+            <mat-radio-button color="primary" value="2" class="me-3">Incomplete</mat-radio-button>
+            <mat-radio-button color="primary" value="9" class="me-3">No Narrative</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="narrative-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!isSaveButtonEnabled"
+            (click)="saveNarrative()"
+            *ngIf="canSaveOrUpdate"> <mat-icon>save</mat-icon>
+            {{ narrativeDetails?.narrativeData ? 'Update' : 'Save' }}
+          </button>
+          <button mat-raised-button color="" (click)="goBack()" >  <mat-icon>reply</mat-icon>Back</button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+<mat-card *ngIf="errorMessage" class="error-message-card">
+  <div class="error-title">
+    <mat-icon color="warn">error_outline</mat-icon>
+    Error
+  </div>
+  <div class="error-content">
+    {{ errorMessage }}
+  </div>
+  <div class="error-actions">
+    <button mat-stroked-button color="primary" (click)="goBack()">Back</button>
+  </div>
+</mat-card>
+
+
+
+
+
+
+
+<!-- <div class="details-container" *ngIf="narrativeDetails && !errorMessage">
+  <mat-card class="pg-data-card">
+    <mat-card-header>
+      <mat-card-title>Deceased Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="3" rowHeight="60px" gutterSize="10px">
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Deceased Name:</strong><br> {{ narrativeDetails.pgData.name }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>CHAMPS ID:</strong><br> {{ narrativeDetails.pgData.champsid }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>HDSS ID:</strong><br> {{ narrativeDetails.pgData.hdssid }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Date of Birth:</strong><br> {{ narrativeDetails.pgData.dob }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Date of Death:</strong><br> {{ narrativeDetails.pgData.dod }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Age:</strong><br> {{ formatAge(narrativeDetails.pgData.age, narrativeDetails.pgData.age_unit) }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Sex:</strong><br> {{ formatSex(narrativeDetails.pgData.sex) }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Father/HH Head:</strong><br> {{ narrativeDetails.pgData.fat_hhhead }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Mother:</strong><br> {{ narrativeDetails.pgData.mother }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Address:</strong><br> {{ narrativeDetails.pgData.adderss}}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Age Group:</strong><br> {{ formatAgeGroup(narrativeDetails.pgData.is_sb, narrativeDetails.pgData.is_neonate, narrativeDetails.pgData.is_child, narrativeDetails.pgData.is_adult) }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Interview Date:</strong><br> {{ narrativeDetails.pgData.intv_date }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Interview Time:</strong><br> {{ narrativeDetails.pgData.intv_time }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Interview Status:</strong><br> {{ formatInterviewStatus(narrativeDetails.pgData.intrv_result) }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Consent:</strong><br> {{ formatConsent(narrativeDetails.pgData.isconcented) }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>Data Entry DateTime:</strong><br> {{ narrativeDetails.pgData.starttime }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>System Version:</strong><br> {{ narrativeDetails.pgData.version }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="grid-item">
+            <strong>UUID:</strong><br> {{ narrativeDetails.pgData.uuid }}
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+
+  
+
+  <mat-card class="narrative-input-card">
+    <mat-card-header>
+      <mat-card-title>VASA Narrative</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>VASA Narrative</mat-label>
+        <textarea matInput [(ngModel)]="vasaNarrative" (ngModelChange)="onNarrativeChange()" rows="10"></textarea>
+      </mat-form-field>
+
+      <mat-radio-group aria-label="Narrative Status" [(ngModel)]="narrativeStatus" (ngModelChange)="onNarrativeStatusChange()" class="mt-3">
+        <label class="me-3">Narrative Status:</label>
+        <mat-radio-button value="1" class="me-2">Complete</mat-radio-button>
+        <mat-radio-button value="2" class="me-2">Incomplete</mat-radio-button>
+        <mat-radio-button value="9" class="me-2">No Narrative</mat-radio-button>
+      </mat-radio-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [disabled]="!isSaveButtonEnabled" (click)="saveNarrative()" *ngIf="canSaveOrUpdate">{{ narrativeDetails?.narrativeData ? 'Update' : 'Save' }}</button>
+      <button mat-button (click)="goBack()">Back</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<mat-card *ngIf="errorMessage">
+  <mat-card-header>
+    <mat-card-title>Error</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ errorMessage }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="goBack()">Back</button>
+  </mat-card-actions>
+</mat-card> -->

@@ -5,20 +5,27 @@
                 <div class="card-body">
                     <div class="text-center">
                         <h2 class="text-center vasa-narrative-title">VASA Narrative</h2>
-                        <img src="../assets/imgpsh.png" alt="Logo" class="img-fluid mb-4" style="max-width: 150px;">
+                        <img src="assets/imgpsh.png" alt="Logo" class="img-fluid mb-4" style="max-width: 150px;">
                     </div>
                     <h3 class="card-title text-center">Login</h3>
-                    <form (ngSubmit)="login()">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                    <div class="login-form-container">
+                        <form (ngSubmit)="login()">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Enter username" [(ngModel)]="username" name="username">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password" name="password">
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary mt-3">Login</button>
+                            </div>
+                        </form>
+                        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+                            {{ errorMessage }}
                         </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

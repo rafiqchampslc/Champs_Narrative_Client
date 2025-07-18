@@ -1,0 +1,158 @@
+.vasa-list-container {
+  padding: 24px;
+}
+
+.filter-card {
+  margin-bottom: 24px;
+}
+
+.table-card {
+  margin-top: 24px;
+}
+
+.mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Ensure vertical alignment */
+
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-mdc-table {
+  width: 100%;
+}
+
+.mat-elevation-z8 {
+  box-shadow: none;
+}
+
+.mat-paginator {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
+
+.col-md-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+  padding: 0 12px;
+}
+
+.mt-3 {
+  margin-top: 16px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.text-danger {
+  color: #f44336;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.table-scroll-content {
+  max-height: 600px; /* Adjust as needed */
+  overflow: auto;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 992px) {
+  .col-md-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .col-md-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .vasa-list-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .vasa-list-container {
+    padding: 8px;
+  }
+  .filter-card .row {
+    margin: 0;
+  }
+  .filter-card .col-md-4 {
+    padding: 0;
+  }
+  .color-legend {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+.large-search-button {
+  padding: 10px 24px;
+  font-size: 1.1rem;
+}
+
+.table-filter-field {
+  width: 300px;
+}
+
+
+
+.color-legend {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: 20px; /* Adjust spacing from title */
+  font-size: 1rem; /* Increased font size */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.color-box {
+  width: 16px; /* Increased size */
+  height: 16px; /* Increased size */
+  border-radius: 3px;
+}
+
+.color-box.complete {
+  background-color: DarkGreen;
+}
+
+.color-box.incomplete {
+  background-color: DarkOrange;
+}
+
+.color-box.no-narrative {
+  background-color: Indigo;
+}
+
+.color-box.other {
+  background-color: Crimson;
+}
+

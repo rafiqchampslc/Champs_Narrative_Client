@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VasaListComponent } from './vasa-list';
+import { PageNotFoundComponent } from './page-not-found';
 
-describe('VASAList', () => {
-  let component: VasaListComponent;
-  let fixture: ComponentFixture<VasaListComponent>;
+describe('PageNotFound', () => {
+  let component: PageNotFoundComponent;
+  let fixture: ComponentFixture<PageNotFoundComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VasaListComponent]
+      imports: [PageNotFoundComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VasaListComponent);
+    fixture = TestBed.createComponent(PageNotFoundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
