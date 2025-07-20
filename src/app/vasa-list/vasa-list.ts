@@ -10,18 +10,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { VasaNarrativeFilter } from '../models/vasa-narrative-filter.model';
 import { catchError, of } from 'rxjs';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 
 @Component({
   selector: 'app-vasa-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, MatPaginator, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatDatepickerModule, MatCardModule],
+  imports: [CommonModule, FormsModule, MatTableModule,MatIconModule, MatPaginator, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatDatepickerModule, MatCardModule],
   templateUrl: './vasa-list.html',
   styleUrl: './vasa-list.css',
 })
@@ -56,7 +59,9 @@ export class  VasaListComponent implements OnInit, AfterViewInit {
     'isconcented': 'Consent',
     'starttime': 'Data Entry DateTime',
     'version': 'System Version',
-    'uuid': 'UUID'
+    'uuid': 'UUID',
+    'datacollector': 'Data Collector',
+    'datauploaddate': 'Submission Date'
   };
 
   private odkVersionsLoaded = false;
@@ -281,8 +286,8 @@ debugger;
   getDisplayedColumns(): string[] {
     const desiredOrder = [
       'name', 'champsid', 'hdssid', 'sex', 'deathStatus', 'vasaNarrative',
-      'dod', 'dob', 'age', 'mother', 'fat_hhhead', 'adderss', 'intrv_result',
-      'isconcented', 'intv_date', 'intv_time', 'starttime', 'version', 'uuid'
+      'dod', 'dob', 'age', 'datacollector', 'mother', 'fat_hhhead', 'adderss', 'intrv_result',
+      'isconcented', 'intv_date', 'intv_time', 'starttime', 'version', 'datauploaddate','uuid'
     ];
     const availableColumns = this.vasaNarrativeData.data.length > 0 ? Object.keys(this.vasaNarrativeData.data[0]) : [];
     const orderedColumns = desiredOrder.filter(col => availableColumns.includes(col));
@@ -292,8 +297,8 @@ debugger;
   getTableColumns(): string[] {
     const desiredOrder = [
       'name', 'champsid', 'hdssid', 'sex', 'deathStatus', 'vasaNarrative',
-      'dod', 'dob', 'age', 'mother', 'fat_hhhead', 'adderss', 'intrv_result',
-      'isconcented', 'intv_date', 'intv_time', 'starttime', 'version', 'uuid'
+      'dod', 'dob', 'age', 'datacollector','mother', 'fat_hhhead', 'adderss', 'intrv_result',
+      'isconcented', 'intv_date', 'intv_time', 'starttime', 'version', 'datauploaddate', 'uuid'
     ];
     const availableColumns = this.vasaNarrativeData.data.length > 0 ? Object.keys(this.vasaNarrativeData.data[0]) : [];
     return desiredOrder.filter(col => availableColumns.includes(col));
@@ -335,6 +340,21 @@ debugger;
         return String(sex);
     }
   }
+exportToExcel(): void {
+  const worksheetData = this.vasaNarrativeData.data.map((item: any) => {
+    const row: any = {};
+    this.getTableColumns().forEach(col => {
+      row[this.columnDisplayNames[col] || col] = item[col];
+    });
+    return row;
+  });
+
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook: XLSX.WorkBook = { Sheets: { 'VASA Details': worksheet }, SheetNames: ['VASA Details'] };
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  FileSaver.saveAs(blob, 'vasa_details.xlsx');
+}
 
   
 
