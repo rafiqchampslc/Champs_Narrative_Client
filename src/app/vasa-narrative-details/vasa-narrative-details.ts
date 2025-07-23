@@ -56,8 +56,8 @@ export class VasaNarrativeDetailsComponent implements OnInit {
                   this.narrativeStatus = '1';
                 } else if (data.narrativeData.isCompleted === 2) {
                   this.narrativeStatus = '2';
-                } else if (data.narrativeData.isCompleted === 9) {
-                  this.narrativeStatus = '9';
+                } else if (data.narrativeData.isCompleted === 3) {
+                  this.narrativeStatus = '3';
                 } else {
                   this.narrativeStatus = null;
                 }
