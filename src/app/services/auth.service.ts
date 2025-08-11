@@ -23,7 +23,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   loginUser(userId: string, password: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${userId}/${password}`);
+      return this.http.get<any>(
+    `${this.apiUrl}/${encodeURIComponent(userId)}/${encodeURIComponent(password)}`
+    );
+    //return this.http.get<any>(`${this.apiUrl}/${userId}/${password}`);
   }
 
   setLoginState(userId: string, role: number) {
