@@ -92,9 +92,9 @@
             [(ngModel)]="vasaNarrative"
             (ngModelChange)="onNarrativeChange()"
             rows="9"
-            maxlength="10000"
+            maxlength="25000"
             placeholder="বাংলা বা ইংরেজিতে বিবরণ লিখুন..."></textarea>
-          <mat-hint align="end">{{ vasaNarrative?.length || 0 }}/10000</mat-hint>
+          <mat-hint align="end">{{ vasaNarrative?.length || 0 }}/25000</mat-hint>
         </mat-form-field>
 
         <div class="status-group">
